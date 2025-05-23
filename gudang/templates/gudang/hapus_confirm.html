@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hapus Barang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <h3>Yakin ingin menghapus barang <strong>{{ barang.nama }}</strong>?</h3>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+        <a href="{% url 'list_barang' %}" class="btn btn-secondary">Batal</a>
+    </form>
+</body>
+</html>

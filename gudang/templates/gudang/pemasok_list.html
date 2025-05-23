@@ -1,0 +1,112 @@
+{% extends "gudang/base.html" %}
+{% block title %}Data Pemasok{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>📋 Data Pemasok</h3>
+        <a href="{% url 'tambah_pemasok' %}" class="btn btn-sm btn-success">
+            <i class="bi bi-plus-circle"></i> Tambah Pemasok
+        </a>
+    </div>
+
+    <!-- Sorting Dropdown -->
+     <form method="get" class="row g-3 mb-3">
+        <div class="col-md-6">
+            <input type="text" name="search_nama" value="{{ search_nama }}" class="form-control" placeholder="Cari nama pemasok...">
+        </div>
+    </form>
+    <form method="get" class="row g-3 mb-3 align-items-center">
+        <input type="hidden" name="search_nama" value="{{ search_nama }}">
+
+        <div class="col-auto">
+            <label for="sortSelect" class="col-form-label fw-semibold">Sort By:</label>
+        </div>
+        <div class="col-auto">
+            <select name="sort" id="sortSelect" class="form-select">
+                {% for field, label in kolom %}
+                    <option value="{{ field }}" {% if sort_by == field %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <select name="order" class="form-select">
+                <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-sm btn-success">Apply</button>
+        </div>
+    </form>
+
+    <!-- Table Data -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nama</th>
+                    <th>Kontak</th>
+                    <th>Alamat</th>
+                    <th>Email</th>
+                    <th style="width: 120px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in page_obj %}
+                <tr>
+                    <td>{{ p.nama }}</td>
+                    <td>{{ p.kontak }}</td>
+                    <td>{{ p.alamat }}</td>
+                    <td>{{ p.email }}</td>
+                    <td>
+                        <a href="{% url 'edit_pemasok' p.pk %}" class="btn btn-warning btn-sm" title="Edit">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="{% url 'hapus_pemasok' p.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')" title="Hapus">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Tidak ada data pemasok.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if search_nama %}&search_nama={{ search_nama }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" aria-label="First">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_nama %}&search_nama={{ search_nama }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_nama %}&search_nama={{ search_nama }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_nama %}&search_nama={{ search_nama }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" aria-label="Last">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}
