@@ -21,12 +21,12 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}" href="{% url 'dashboard' %}">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'dashboard' %}">
             <i class="bi bi-graph-up"></i> Dashboard
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'list_barang' %}">
+          <a class="nav-link {% if request.path == '/list/' %}active{% endif %}" href="{% url 'list_barang' %}">
             <i class="bi bi-table"></i> Data Barang
           </a>
         </li>
